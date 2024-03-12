@@ -6,7 +6,7 @@ const app = express();
 
 const corsOptions = {
     origin: [process.env.CLIENT_URL1, process.env.CLIENT_URL2, process.env.CLIENT_URL3, process.env.CLIENT_URL4,
-    process.env.CLIENT_URL5, process.env.CLIENT_URL6, process.env.CLIENT_URL7,],
+    process.env.CLIENT_URL5, process.env.CLIENT_URL6,],
 };
 
 app.use(cors(corsOptions));
