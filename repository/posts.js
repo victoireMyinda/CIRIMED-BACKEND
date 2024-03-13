@@ -52,7 +52,9 @@ const getAll = async () => {
  */
 const getCountAndAll = async (requetes) => {
 
-    const { page, limit, keyword } = requetes;
+    const page = requetes && requetes.page;
+    const limit = requetes && requetes.limit;
+    const keyword = requetes && requetes.keyword
 
     const query = {};
 

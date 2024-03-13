@@ -2,10 +2,35 @@ const postRepository = require('../repository/posts');
 const validator = require("../validators/posts");
 const fs = require('fs');
 
-const create = async (data, file) => {
-    validator.validatorPost(data);
-    const newPost = await postRepository.create(data, file);
-    return await postRepository.findById(newPost.id);
+const create = async (post, file, query) => {
+    validator.validatorPost(post);
+    await postRepository.create(post, file);
+
+    const results = [];
+
+    const produitsCountAndAll = await postRepository.getCountAndAll(query);
+    const produitsAll = await postRepository.getAll();
+
+    const { data, totalItems, status, totalPages } = produitsCountAndAll;
+
+    data && data.length > 0 && data.map(produitCount => {
+        return produitsAll && produitsAll.length > 0 &&
+            produitsAll.map(produit => {
+                if (produitCount.id === produit.id) {
+                    results.push(produit);
+                    return results;
+                }
+            })
+    });
+
+    const response = {
+        Status: status,
+        totalPages: totalPages,
+        totalItems: totalItems,
+        data: results
+    }
+
+    return response;
 };
 
 const getById = async (id) => {
@@ -40,7 +65,7 @@ const getAll = async (query) => {
         Status: status,
         totalPages: totalPages,
         totalItems: totalItems,
-        produits: results
+        data: results
     }
 
     return response;

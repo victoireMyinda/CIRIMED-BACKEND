@@ -160,7 +160,7 @@ const getAll = async (query) => {
         Status: status,
         totalPages: totalPages,
         totalItems: totalItems,
-        produits: results
+        data: results
     }
 
     return response;
