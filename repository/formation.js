@@ -4,15 +4,17 @@ const { Op } = require('sequelize');
 /**
  * 
  * @param {*} data 
- * @returns objet new post
+ * @returns objet new formation
  */
 const create = async (data, file) => {
-    const { title, desc, userId } = data;
+    const { title, desc, prix, dateDebut, dateFin } = data;
 
-    const response = await db.posts.create({
+    const response = await db.formations.create({
         title: title,
         desc: desc,
-        userId: userId,
+        prix: prix,
+        dateDebut: dateDebut,
+        dateFin: dateFin,
         url: file && `api/${file.path}`,
     });
 
@@ -22,25 +24,23 @@ const create = async (data, file) => {
 /**
  * 
  * @param {*} id 
- * @returns post
+ * @returns formation
  */
 const findById = async (id) => {
-    return await db.posts.findByPk(id, {
+    return await db.formations.findByPk(id, {
         include: [
             {
-                model: db.users, as: "user", attributes: ["id", "prenom", "createdAt", "updatedAt", "url", "role",
-                    "isActive", "isConnected", "email", "numTel", "bio", "dateNaissance", "sexe"],
+                model: db.candidats,
             },
         ]
     });
 }
 
 const getAll = async () => {
-    return await db.posts.findAll({
+    return await db.formations.findAll({
         include: [
             {
-                model: db.users, as: "user", attributes: ["id", "prenom", "createdAt", "updatedAt", "url", "role",
-                    "isActive", "isConnected", "email", "numTel", "bio", "dateNaissance", "sexe"],
+                model: db.candidats,
             },
         ]
     })
@@ -48,7 +48,7 @@ const getAll = async () => {
 
 /**
  * 
- * @returns list posts
+ * @returns list formations
  */
 const getCountAndAll = async (requetes) => {
 
@@ -66,10 +66,10 @@ const getCountAndAll = async (requetes) => {
     };
 
     if (keyword) {
-        query.nom = { [Op.like]: `%${keyword}%` };
+        query.title = { [Op.like]: `%${keyword}%` };
     }
 
-    const { rows, count } = await db.posts.findAndCountAll({
+    const { rows, count } = await db.formations.findAndCountAll({
         where: query,
         ...queries,
     });
@@ -91,10 +91,13 @@ const getCountAndAll = async (requetes) => {
  * @returns id
  */
 const update = async (data, id, file) => {
-    const { title, desc, status } = data;
-    await db.posts.update({
+    const { title, desc, prix, dateDebut, dateFin, status } = data;
+    await db.formations.update({
         title: title,
         desc: desc,
+        prix: prix,
+        dateDebut: dateDebut,
+        dateFin: dateFin,
         url: file && `api/${file.path}`,
         status: status
     }, {
@@ -110,7 +113,7 @@ const update = async (data, id, file) => {
  * @returns number 1 if is deleted
  */
 const destroy = async (id) => {
-    let isTrue = await db.posts.destroy({ where: { id: id } });
+    let isTrue = await db.formations.destroy({ where: { id: id } });
     return isTrue
 }
 

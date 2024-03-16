@@ -15,9 +15,13 @@ app.use(express.urlencoded({ extended: true }));
 
 const usersRouter = require("./routes/users.routes");
 const postsRouter = require("./routes/posts.routes");
+const formationRouter = require("./routes/formation.routes");
+const candidatsRouter = require("./routes/candidat.routes");
 
 app.use("/api/users", usersRouter);
 app.use("/api/posts", postsRouter);
+app.use("/api/formations", formationRouter);
+app.use("/api/candidats", candidatsRouter);
 
 app.use("/api/uploads", express.static('./uploads'));
 

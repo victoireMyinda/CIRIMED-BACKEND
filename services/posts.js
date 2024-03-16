@@ -2,35 +2,11 @@ const postRepository = require('../repository/posts');
 const validator = require("../validators/posts");
 const fs = require('fs');
 
-const create = async (post, file, query) => {
+const create = async (post, file) => {
     validator.validatorPost(post);
-    await postRepository.create(post, file);
-
-    const results = [];
-
-    const produitsCountAndAll = await postRepository.getCountAndAll(query);
-    const produitsAll = await postRepository.getAll();
-
-    const { data, totalItems, status, totalPages } = produitsCountAndAll;
-
-    data && data.length > 0 && data.map(produitCount => {
-        return produitsAll && produitsAll.length > 0 &&
-            produitsAll.map(produit => {
-                if (produitCount.id === produit.id) {
-                    results.push(produit);
-                    return results;
-                }
-            })
-    });
-
-    const response = {
-        Status: status,
-        totalPages: totalPages,
-        totalItems: totalItems,
-        data: results
-    }
-
-    return response;
+    const response = await postRepository.create(post, file);
+    const postById = await postRepository.findById(response.id);
+    return postById;
 };
 
 const getById = async (id) => {
@@ -43,32 +19,8 @@ const getById = async (id) => {
 }
 
 const getAll = async (query) => {
-
-    const results = [];
-
-    const produitsCountAndAll = await postRepository.getCountAndAll(query);
-    const produitsAll = await postRepository.getAll();
-
-    const { data, totalItems, status, totalPages } = produitsCountAndAll;
-
-    data && data.length > 0 && data.map(produitCount => {
-        return produitsAll && produitsAll.length > 0 &&
-            produitsAll.map(produit => {
-                if (produitCount.id === produit.id) {
-                    results.push(produit);
-                    return results;
-                }
-            })
-    });
-
-    const response = {
-        Status: status,
-        totalPages: totalPages,
-        totalItems: totalItems,
-        data: results
-    }
-
-    return response;
+    const posts = await postRepository.getAll();
+    return posts;
 }
 
 const update = async (data, id, file) => {

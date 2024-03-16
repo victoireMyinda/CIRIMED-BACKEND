@@ -139,31 +139,8 @@ const getById = async (id) => {
 }
 
 const getAll = async (query) => {
-    const results = [];
-
-    const produitsCountAndAll = await usersReppository.getCountAndAll(query);
-    const produitsAll = await usersReppository.getAll();
-
-    const { data, totalItems, status, totalPages } = produitsCountAndAll;
-
-    data && data.length > 0 && data.map(produitCount => {
-        return produitsAll && produitsAll.length > 0 &&
-            produitsAll.map(produit => {
-                if (produitCount.id === produit.id) {
-                    results.push(produit);
-                    return results;
-                }
-            })
-    });
-
-    const response = {
-        Status: status,
-        totalPages: totalPages,
-        totalItems: totalItems,
-        data: results
-    }
-
-    return response;
+    const users = await usersReppository.getAll();
+    return users;
 }
 
 const update = async (user, id) => {
