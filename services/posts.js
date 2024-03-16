@@ -24,6 +24,7 @@ const getAll = async (query) => {
 }
 
 const update = async (data, id, file) => {
+    console.log(data)
     const postExistById = await postRepository.findById(id);
     if (!postExistById)
         throw new Error('Aucun post trouvé avec le ID ' + id);

@@ -9,7 +9,7 @@ const findByEmail = async (email) => {
     let user = await db.users.findOne({ where: { email: email } },
         {
             attributes: ["id", "nom", "createdAt", "updatedAt", "url", "role",
-                "isActive", "isConnected", "email", "numTel", "prenom", "bio", "dateNaissance", "sexe"]
+                "isActive", "isConnected", "email", "numTel", "prenom", "bio", "dateNaissance", "sexe", "nom"]
         }
     );
     return user;
@@ -18,7 +18,7 @@ const findByEmail = async (email) => {
 const findByNumTel = async (numTel) => {
     let user = await db.users.findOne({ where: { numTel: numTel } },
         {
-            attributes: ["id", "prenom", "createdAt", "updatedAt", "url", "role",
+            attributes: ["id", "prenom", "createdAt", "updatedAt", "url", "role", "nom",
                 "isActive", "isConnected", "email", "numTel", "bio", "dateNaissance", "sexe"]
         }
     );
@@ -32,7 +32,7 @@ const findByNumTel = async (numTel) => {
  */
 const findById = async (id) => {
     return await db.users.findByPk(id, {
-        attributes: ["id", "prenom", "createdAt", "updatedAt", "url", "role",
+        attributes: ["id", "prenom", "createdAt", "updatedAt", "url", "role", "nom",
             "isActive", "isConnected", "email", "numTel", "bio", "dateNaissance", "sexe"],
         include: [
             { model: db.posts, as: "posts" },
@@ -42,7 +42,7 @@ const findById = async (id) => {
 
 const findByIdWithModels = async (id) => {
     return await db.users.findByPk(id, {
-        attributes: ["id", "prenom", "createdAt", "updatedAt", "url", "role",
+        attributes: ["id", "prenom", "createdAt", "updatedAt", "url", "role", "nom",
             "isActive", "isConnected", "email", "numTel", "nom", "bio", "dateNaissance", "sexe"],
     });
 }
@@ -85,7 +85,7 @@ const getCountAndAll = async (requetes) => {
     }
 
     const { rows, count } = await db.users.findAndCountAll({
-        attributes: ["id", "prenom", "createdAt", "updatedAt", "url", "role",
+        attributes: ["id", "prenom", "createdAt", "updatedAt", "url", "role", "nom",
             "isActive", "isConnected", "email", "numTel", "nom", "bio", "dateNaissance", "sexe"],
         where: query,
         ...queries,

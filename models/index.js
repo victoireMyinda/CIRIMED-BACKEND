@@ -34,7 +34,6 @@ db.sequelize = sequelize;
 db.users = require("./users.model")(sequelize, DataTypes);
 db.posts = require("./posts.model")(sequelize, DataTypes);
 db.formations = require("./formation.model")(sequelize, DataTypes);
-db.candidats = require("./candidat.model")(sequelize, DataTypes);
 db.formation_candidat = require("./formation_candidat.model")(sequelize, DataTypes);
 
 // MANY - ONE USER CRM / POSTS
@@ -48,8 +47,8 @@ db.posts.belongsTo(db.users, {
 });
 
 // RELATION N-N FORMATIONS-CANDIDATS
-db.formations.belongsToMany(db.candidats, { through: 'formation_candidat' });
-db.candidats.belongsToMany(db.formations, { through: 'formation_candidat' });
+db.formations.belongsToMany(db.users, { through: 'formation_candidat' });
+db.users.belongsToMany(db.formations, { through: 'formation_candidat' });
 
 db.sequelize.sync({ force: false })
     .then(() => {

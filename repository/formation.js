@@ -30,7 +30,7 @@ const findById = async (id) => {
     return await db.formations.findByPk(id, {
         include: [
             {
-                model: db.candidats,
+                model: db.users,
             },
         ]
     });
@@ -40,7 +40,7 @@ const getAll = async () => {
     return await db.formations.findAll({
         include: [
             {
-                model: db.candidats,
+                model: db.users,
             },
         ]
     })
